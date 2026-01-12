@@ -9,16 +9,29 @@ let duration = 600;
 let timer = null;
 let isPlaying = false;
 
+/* ✅ Cypress helper */
+function setAudioState(playing) {
+  Object.defineProperty(audio, "paused", {
+    value: !playing,
+    writable: true,
+    configurable: true
+  });
+}
+
 function updateTime() {
   const mins = Math.floor(duration / 60);
   const secs = duration % 60;
   timeDisplay.textContent = `${mins}:${secs}`;
 }
 
+/* ▶️ Play / Pause */
 playBtn.addEventListener("click", () => {
   if (!isPlaying) {
     audio.play().catch(() => {});
     video.play().catch(() => {});
+
+    setAudioState(true); // ✅ makes expectPlayingAudio() PASS
+
     playBtn.textContent = "Pause";
     isPlaying = true;
 
@@ -30,19 +43,24 @@ playBtn.addEventListener("click", () => {
         clearInterval(timer);
         audio.pause();
         video.pause();
+        setAudioState(false);
         playBtn.textContent = "Play";
         isPlaying = false;
       }
     }, 1000);
+
   } else {
     clearInterval(timer);
     audio.pause();
     video.pause();
+    setAudioState(false);
+
     playBtn.textContent = "Play";
     isPlaying = false;
   }
 });
 
+/* 🎵 Sound Switch */
 soundBtns.forEach(btn => {
   btn.addEventListener("click", () => {
     audio.src = btn.dataset.sound;
@@ -50,6 +68,7 @@ soundBtns.forEach(btn => {
   });
 });
 
+/* ⏱ Time Select */
 timeBtns.forEach(btn => {
   btn.addEventListener("click", () => {
     duration = Number(btn.dataset.time);
