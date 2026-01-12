@@ -1,65 +1,57 @@
-//your JS code here. If required.
-const video = document.getElementById("video");
-const audio = document.getElementById("audio");
+const audio = document.querySelector("audio");
+const video = document.querySelector("video");
 const playBtn = document.querySelector(".play");
 const timeDisplay = document.querySelector(".time-display");
-const soundPicker = document.querySelector(".sound-picker");
-const timeSelect = document.getElementById("time-select");
+const soundBtns = document.querySelectorAll(".sound-picker button");
+const timeBtns = document.querySelectorAll(".time-select button");
 
-let duration = 600; // default 10 mins
-let currentTime = duration;
-
-// Play / Pause
-playBtn.addEventListener("click", () => {
-  if (audio.paused) {
-    audio.play();
-    video.play();
-    playBtn.textContent = "Pause";
-  } else {
-    audio.pause();
-    video.pause();
-    playBtn.textContent = "Play";
-  }
-});
-
-// Sound switch
-soundPicker.addEventListener("click", (e) => {
-  if (e.target.tagName === "BUTTON") {
-    audio.src = e.target.dataset.sound;
-    video.src = e.target.dataset.video;
-    audio.play();
-    video.play();
-    playBtn.textContent = "Pause";
-  }
-});
-
-// Time select
-timeSelect.addEventListener("click", (e) => {
-  if (e.target.tagName === "BUTTON") {
-    duration = e.target.dataset.time;
-    currentTime = duration;
-    updateTime();
-  }
-});
-
-// Timer countdown
-audio.addEventListener("timeupdate", () => {
-  const elapsed = Math.floor(audio.currentTime);
-  const remaining = duration - elapsed;
-  currentTime = remaining;
-
-  updateTime();
-
-  if (remaining <= 0) {
-    audio.pause();
-    video.pause();
-    audio.currentTime = 0;
-    playBtn.textContent = "Play";
-  }
-});
+let duration = 600;
+let timer;
+let isPlaying = false;
 
 function updateTime() {
-  const mins = Math.floor(currentTime / 60);
-  const secs = Math.floor(currentTime % 60);
+  const mins = Math.floor(duration / 60);
+  const secs = duration % 60;
   timeDisplay.textContent = `${mins}:${secs}`;
 }
+
+playBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    audio.play();
+    video.play();
+    playBtn.textContent = "Pause";
+    isPlaying = true;
+
+    timer = setInterval(() => {
+      if (duration > 0) {
+        duration--;
+        updateTime();
+      } else {
+        clearInterval(timer);
+        audio.pause();
+        video.pause();
+        isPlaying = false;
+      }
+    }, 1000);
+  } else {
+    clearInterval(timer);
+    audio.pause();
+    video.pause();
+    playBtn.textContent = "Play";
+    isPlaying = false;
+  }
+});
+
+soundBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    audio.src = btn.dataset.sound;
+    video.src = btn.dataset.video;
+  });
+});
+
+timeBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    duration = Number(btn.dataset.time);
+    updateTime();
+  });
+});
