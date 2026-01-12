@@ -1,44 +1,48 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>Meditation App</title>
 </head>
-
 <body>
-	<div class="app">
 
-  <div class="vid-container">
-    <video>
-      <source src="Sounds/beach.mp4" type="video/mp4">
-    </video>
+  <div class="app">
+
+    <!-- Video Section -->
+    <div class="vid-container">
+      <video muted>
+        <source src="Sounds/beach.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Audio Player -->
+    <div class="player-container">
+      <audio>
+        <source src="Sounds/beach.mp3" type="audio/mp3">
+      </audio>
+      <button class="play">Play</button>
+      <h2 class="time-display">10:0</h2>
+    </div>
+
+    <!-- Sound Picker -->
+    <div class="sound-picker">
+      <button data-sound="Sounds/beach.mp3" data-video="Sounds/beach.mp4">
+        Meditation-A
+      </button>
+      <button data-sound="Sounds/rain.mp3" data-video="Sounds/rain.mp4">
+        Meditation-B
+      </button>
+    </div>
+
+    <!-- Time Selector -->
+    <div class="time-select">
+      <button class="smaller-mins" data-time="120">2 Minutes</button>
+      <button class="medium-mins" data-time="300">5 Minutes</button>
+      <button class="long-mins" data-time="600">10 Minutes</button>
+    </div>
+
   </div>
 
-  <div class="player-container">
-    <audio src="Sounds/beach.mp3"></audio>
-    <button class="play">Play</button>
-    <h2 class="time-display">10:0</h2>
-  </div>
-
-  <div class="sound-picker">
-    <button data-sound="Sounds/beach.mp3" data-video="Sounds/beach.mp4">Meditation-A</button>
-    <button data-sound="Sounds/rain.mp3" data-video="Sounds/rain.mp4">Meditation-B</button>
-  </div>
-
-  <div class="time-select">
-    <button class="smaller-mins" data-time="120">2 Min</button>
-    <button class="medium-mins" data-time="300">5 Min</button>
-    <button class="long-mins" data-time="600">10 Min</button>
-  </div>
-
-</div>
-
-
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
-
+  <script src="script.js"></script>
 </body>
-
 </html>

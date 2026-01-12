@@ -6,7 +6,7 @@ const soundBtns = document.querySelectorAll(".sound-picker button");
 const timeBtns = document.querySelectorAll(".time-select button");
 
 let duration = 600;
-let timer;
+let timer = null;
 let isPlaying = false;
 
 function updateTime() {
@@ -17,8 +17,8 @@ function updateTime() {
 
 playBtn.addEventListener("click", () => {
   if (!isPlaying) {
-    audio.play();
-    video.play();
+    audio.play().catch(() => {});
+    video.play().catch(() => {});
     playBtn.textContent = "Pause";
     isPlaying = true;
 
@@ -30,6 +30,7 @@ playBtn.addEventListener("click", () => {
         clearInterval(timer);
         audio.pause();
         video.pause();
+        playBtn.textContent = "Play";
         isPlaying = false;
       }
     }, 1000);
